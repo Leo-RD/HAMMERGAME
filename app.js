@@ -1,29 +1,45 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    const playButton = document.getElementById('play-button');
+    const playerNameInput = document.getElementById('player-name');
+    const loadingElement = document.getElementById('loading');
+    const errorMessageElement = document.getElementById('error-message');
+    
     // Animation du titre
     const title = document.querySelector('.title');
     setInterval(() => {
         title.style.textShadow = `0 0 ${Math.random() * 15 + 5}px rgba(255, 0, 0, 0.7)`;
     }, 500);
-
-    // Charger les scores dynamiquement
-    fetch('api/top_scores.php')
-        .then(res => res.json())
-        .then(scores => {
-            const standingsList = document.querySelector('.standings-list');
-            const bestScoreDiv = document.querySelector('.best-score');
-
-            standingsList.innerHTML = '';
-            scores.forEach((entry, index) => {
-                if (index === 0) {
-                    bestScoreDiv.innerHTML = `
-<div>1st - ${entry.pseudo} :</div>
-<div>${entry.score}</div>`;
-                } else {
-                    standingsList.innerHTML += `<li>${index + 1}th - ${entry.pseudo} : ${entry.score}</li>`;
-                }
-            });
-        })
-        .catch(err => {
-            console.error('Erreur de chargement des scores :', err);
-        });
+    
+    // Gestionnaire d'événement pour le bouton Jouer
+    playButton.addEventListener('click', async function() {
+        const playerName = playerNameInput.value.trim();
+        
+        // Validation simple du pseudo
+        if (!playerName) {
+            alert('Veuillez entrer un pseudo');
+            playerNameInput.focus();
+            return;
+        }
+        
+        // Afficher le chargement
+        playButton.classList.add('hidden');
+        loadingElement.classList.remove('hidden');
+        errorMessageElement.classList.add('hidden');
+        
+        try {
+            // Stocker le nom du joueur dans sessionStorage
+            sessionStorage.setItem('playerName', playerName);
+            
+            // Rediriger vers la page du jeu
+            window.location.href = 'game.html';
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            
+            // Afficher le message d'erreur
+            errorMessageElement.classList.remove('hidden');
+            playButton.classList.remove('hidden');
+            loadingElement.classList.add('hidden');
+        }
+    });
 });

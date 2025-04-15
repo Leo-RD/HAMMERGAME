@@ -3,43 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAMMER GAME</title>
+    <title>HAMMER GAME - Accueil</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
+    <div class="home-container">
         <h1 class="title">HAMMER GAME</h1>
         
-        <div class="score-container">
-            <div class="score">SCORE : 958</div>
-        </div>
-        
-        <div class="panels-container">
-            <div class="panel">
-                <h2 class="panel-title">STANDINGS</h2>
-                <ul class="standings-list">
-                    <li>2nd - NAME : SCORE</li>
-                    <li>3rd -</li>
-                    <li>4th -</li>
-                    <li>5th -</li>
-                    <li>6th -</li>
-                    <li>7th -</li>
-                </ul>
+        <div class="content">
+            <div class="player-info">
+                <label for="player-name">ENTREZ VOTRE PSEUDO :</label>
+                <input type="text" id="player-name" maxlength="10" placeholder="PSEUDO">
             </div>
             
-            <div class="panel">
-                <h2 class="panel-title">ALL-TIME BEST</h2>
-                <div class="best-score">
-                    <div>1st - PSEUDO :</div>
-                    <div>999</div>
-                </div>
+            <button id="play-button" class="play-button">JOUER</button>
+            
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>CHARGEMENT...</p>
+            </div>
+            
+            <div id="error-message" class="error-message hidden">
+                Erreur de connexion au serveur. Veuillez réessayer.
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
