@@ -183,7 +183,6 @@ body {
     margin: 20px 0;
     width: 80%;
     text-align: center;
-    opacity: 0.8;
     border: 2px solid rgba(255, 215, 0, 0.3);
 }
 
@@ -201,12 +200,13 @@ body {
 }
 
 .panel {
-    background-color: rgba(51, 51, 102, 0.6);
+    background-color: rgba(51, 51, 102, 0.8);
     border-radius: 10px;
     padding: 20px;
     width: 48%;
     height: 350px;
     display: flex;
+    flex-direction: column;
 }
 
 .panel-title {
