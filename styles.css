@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Micro-5';
-    src: url('fonts/Tiny5/Tiny5-Regular.ttf') format('ttf');
+    font-family: 'Tiny-5';
+    src: url('fonts/Tiny5/Tiny5-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
