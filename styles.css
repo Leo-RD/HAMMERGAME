@@ -57,7 +57,7 @@ body {
 }
 
 .title {
-    font-family: 'Micro-5', monospace;
+    font-family: 'Tiny-5', monospace;
     font-size: 3.5rem;
     color: #FF0000;
     text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
