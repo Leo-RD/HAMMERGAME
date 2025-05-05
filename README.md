@@ -1,6 +1,3 @@
-
-Here is a sample `README.md` for your **Hammer Game** project, written in a clear and structured format suitable for a GitHub repository:
-
 ---
 
 # 🎯 Hammer Game
