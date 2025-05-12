@@ -61,30 +61,37 @@ document.addEventListener('DOMContentLoaded', function() {
         return 'th';
     }
     
-    // Fonction pour mettre à jour le score en temps réel
-    function setupScoreUpdates() {
-        // Simuler la réception de données du Raspberry Pi
-        // Dans un cas réel, vous utiliseriez WebSockets ou des requêtes périodiques
-        
-        // Exemple avec des requêtes périodiques
-        setInterval(async () => {
-            try {
-                // Requête pour obtenir le score actuel
-                const response = await fetch(`api/current_score.php?player=${playerName}`);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('current-score').textContent = data.score || '0';
+    // Fonction pour configurer MQTT pour les scores en temps réel
+    function setupMQTT() {
+        const brokerUrl = "ws://<IP_RASPBERRY>:9001"; // Remplace par l'adresse IP de ta RPi
+        const topic = "score/live";
+
+        const client = mqtt.connect(brokerUrl);
+
+        client.on("connect", () => {
+            console.log("Connected to MQTT broker");
+            client.subscribe(topic, (err) => {
+                if (!err) {
+                    console.log("Subscribed to topic:", topic);
+                } else {
+                    console.error("Subscription error:", err);
                 }
-            } catch (error) {
-                console.error('Erreur de mise à jour du score:', error);
-            }
-        }, 1000); // Mise à jour toutes les secondes
+            });
+        });
+
+        client.on("message", (topic, message) => {
+            console.log("Message received:", message.toString());
+            document.getElementById("current-score").textContent = message.toString();
+        });
+
+        client.on("error", (error) => {
+            console.error("Connection error:", error);
+        });
     }
-    
+
     // Charger les meilleurs scores au démarrage
     loadTopScores();
     
-    // Configurer les mises à jour de score
-    setupScoreUpdates();
+    // Configurer MQTT pour le score en temps réel
+    setupMQTT();
 });
