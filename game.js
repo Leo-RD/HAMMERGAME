@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     function setupMQTT() {
-        const brokerUrl = "ws://172.31.254.144:9001"; // Remplace par l'adresse IP de ta RPi
+        const brokerUrl = "wss://77fbb-37-71-78-234.ngrok-free.app"; // Remplace par l'adresse IP de ta RPi
         const topic = "score/live";
 
         const client = mqtt.connect(brokerUrl);
