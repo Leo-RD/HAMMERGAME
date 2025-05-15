@@ -63,20 +63,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     function setupMQTT() {
-    const ws = new WebSocket("wss://9b8f-37-71-78-234.ngrok-free.app"); // ⚠️ remplace par l’IP de ta Raspberry Pi
+    const eventSource = new EventSource("https://9b8f-37-71-78-234.ngrok-free.app/events");
 
-    ws.onopen = () => {
-        console.log("✅ Connecté au proxy WebSocket");
-    };
-
-    ws.onmessage = (event) => {
+    eventSource.onmessage = (event) => {
         console.log("📩 Nouveau score reçu :", event.data);
         document.getElementById("current-score").textContent = event.data;
     };
 
-    ws.onerror = (err) => {
-        console.error("❌ Erreur WebSocket :", err);
+    eventSource.onerror = (err) => {
+        console.error("❌ Erreur SSE :", err);
     };
+
+    console.log("✅ Connecté au proxy SSE");
 }
 
 
