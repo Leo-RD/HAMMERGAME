@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     function setupMQTT() {
-    const ws = new WebSocket("ws://172.31.254.144:3000"); // ⚠️ remplace par l’IP de ta Raspberry Pi
+    const ws = new WebSocket("wss://9aa9-37-71-78-234.ngrok-free.app"); // ⚠️ remplace par l’IP de ta Raspberry Pi
 
     ws.onopen = () => {
         console.log("✅ Connecté au proxy WebSocket");
