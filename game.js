@@ -63,31 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     function setupMQTT() {
-        const brokerUrl = "wss://77fbb-37-71-78-234.ngrok-free.app"; // Remplace par l'adresse IP de ta RPi
-        const topic = "score/live";
+    const ws = new WebSocket("ws://172.31.254.144:3000"); // ⚠️ remplace par l’IP de ta Raspberry Pi
 
-        const client = mqtt.connect(brokerUrl);
+    ws.onopen = () => {
+        console.log("✅ Connecté au proxy WebSocket");
+    };
 
-        client.on("connect", () => {
-            console.log("Connected to MQTT broker");
-            client.subscribe(topic, (err) => {
-                if (!err) {
-                    console.log("Subscribed to topic:", topic);
-                } else {
-                    console.error("Subscription error:", err);
-                }
-            });
-        });
+    ws.onmessage = (event) => {
+        console.log("📩 Nouveau score reçu :", event.data);
+        document.getElementById("current-score").textContent = event.data;
+    };
 
-        client.on("message", (topic, message) => {
-            console.log("Message received:", message.toString());
-            document.getElementById("current-score").textContent = message.toString();
-        });
+    ws.onerror = (err) => {
+        console.error("❌ Erreur WebSocket :", err);
+    };
+}
 
-        client.on("error", (error) => {
-            console.error("Connection error:", error);
-        });
-    }
 
     // Charger les meilleurs scores au démarrage
     loadTopScores();
