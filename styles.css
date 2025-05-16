@@ -11,6 +11,18 @@
     box-sizing: border-box;
 }
 
+.emoji {
+    font-size: 5rem;
+    transition: transform 0.3s;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.bounce {
+    transform: scale(1.2) rotate(10deg);
+}
+
+
 body {
     background-image: url('images/background.png');
     background-size: cover;

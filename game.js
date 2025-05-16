@@ -76,7 +76,20 @@ function setupPusher() {
     channel.bind("score-update", function(data) {
         console.log("📩 Nouveau score reçu :", data.score);
         document.getElementById("current-score").textContent = data.score;
-    });
+    // Gestion des emojis selon le score
+            const emojiElement = document.getElementById('emoji');
+            if (score < 500) {
+                emojiElement.textContent = '😡';
+            } else if (score < 750) {
+                emojiElement.textContent = '😊';
+            } else {
+                emojiElement.textContent = '😁';
+            }
+
+            // Animation de rebond
+            emojiElement.classList.add('bounce');
+            setTimeout(() => emojiElement.classList.remove('bounce'), 500);
+        });
 
     console.log("✅ Connecté à Pusher");
 }
