@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     function setupMQTT() {
-    const eventSource = new EventSource("https://5cfa-37-71-78-234.ngrok-free.app/events");
+    const eventSource = new EventSource("https://c2a3-37-71-78-234.ngrok-free.app/events");
 
     eventSource.onmessage = (event) => {
         console.log("📩 Nouveau score reçu :", event.data);
