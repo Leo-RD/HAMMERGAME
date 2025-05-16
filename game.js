@@ -81,8 +81,10 @@ function setupPusher() {
         
         // Gestion des emojis selon le score
         const emojiElement = document.getElementById('emoji');
-        if (score < 500) {
-            emojiElement.textContent = '😡';
+        if (score < 250) {
+            emojiElement.textContent = '😢';
+        } else if (score < 500) {
+            emojiElement.textContent = '😐';
         } else if (score < 750) {
             emojiElement.textContent = '😊';
         } else {
