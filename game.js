@@ -86,5 +86,5 @@ function setupPusher() {
     loadTopScores();
     
     // Configurer MQTT pour le score en temps réel
-    setupMQTT();
+    setupPusher();
 });
