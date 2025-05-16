@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fonction pour configurer MQTT pour les scores en temps réel
     // Fonction pour configurer Pusher pour les scores en temps réel
+// Fonction pour configurer Pusher pour les scores en temps réel
 function setupPusher() {
     // Initialiser Pusher
     const pusher = new Pusher("95eb32a3909b0ed379b1", {
@@ -74,22 +75,24 @@ function setupPusher() {
     
     // Écouter les mises à jour des scores
     channel.bind("score-update", function(data) {
-        console.log("📩 Nouveau score reçu :", data.score);
-        document.getElementById("current-score").textContent = data.score;
-    // Gestion des emojis selon le score
-            const emojiElement = document.getElementById('emoji');
-            if (score < 500) {
-                emojiElement.textContent = '😡';
-            } else if (score < 750) {
-                emojiElement.textContent = '😊';
-            } else {
-                emojiElement.textContent = '😁';
-            }
+        const score = parseInt(data.score, 10); // Extraction du score
+        console.log("📩 Nouveau score reçu :", score);
+        document.getElementById("current-score").textContent = score;
+        
+        // Gestion des emojis selon le score
+        const emojiElement = document.getElementById('emoji');
+        if (score < 500) {
+            emojiElement.textContent = '😡';
+        } else if (score < 750) {
+            emojiElement.textContent = '😊';
+        } else {
+            emojiElement.textContent = '😁';
+        }
 
-            // Animation de rebond
-            emojiElement.classList.add('bounce');
-            setTimeout(() => emojiElement.classList.remove('bounce'), 500);
-        });
+        // Animation de rebond
+        emojiElement.classList.add('bounce');
+        setTimeout(() => emojiElement.classList.remove('bounce'), 500);
+    });
 
     console.log("✅ Connecté à Pusher");
 }
