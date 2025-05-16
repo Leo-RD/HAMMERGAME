@@ -62,19 +62,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Fonction pour configurer MQTT pour les scores en temps réel
-    function setupMQTT() {
-    const eventSource = new EventSource("https://c2a3-37-71-78-234.ngrok-free.app/events");
+    // Fonction pour configurer Pusher pour les scores en temps réel
+function setupPusher() {
+    // Initialiser Pusher
+    const pusher = new Pusher("95eb32a3909b0ed379b1", {
+        cluster: "eu",
+    });
 
-    eventSource.onmessage = (event) => {
-        console.log("📩 Nouveau score reçu :", event.data);
-        document.getElementById("current-score").textContent = event.data;
-    };
+    // S'abonner au canal "hammergame"
+    const channel = pusher.subscribe("hammergame");
+    
+    // Écouter les mises à jour des scores
+    channel.bind("score-update", function(data) {
+        console.log("📩 Nouveau score reçu :", data.score);
+        document.getElementById("current-score").textContent = data.score;
+    });
 
-    eventSource.onerror = (err) => {
-        console.error("❌ Erreur SSE :", err);
-    };
-
-    console.log("✅ Connecté au proxy SSE");
+    console.log("✅ Connecté à Pusher");
 }
 
 
