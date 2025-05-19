@@ -11,7 +11,7 @@
 
 * **Platform:** Raspberry Pi
 * **Language:** Python
-* **Web Framework:** FastAPI or Flask
+* **Web Framework:** Phpslim API
 * **Front-end:** Webpage (HTML/CSS/JavaScript)
 * **Sensor:** Pressure sensor to detect hammer hits (RP-240-ST)
 * **Database:** Stores player scores and leaderboard
@@ -50,7 +50,7 @@
 * **Python**
 * **Raspberry Pi OS**
 * **Pressure Sensor (details below)**
-* **FastAPI / Flask**
+* **PhpSlim API**
 * **SQLite / PostgreSQL (or your DB choice)**
 * **HTML/CSS/JavaScript**
 * **Vercel**
