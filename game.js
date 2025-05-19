@@ -117,7 +117,7 @@ function setupPusher() {
 function launchConfetti() {
     confetti({
         particleCount: 500,
-        spread: 70,
+        spread: 100,
         angle: 90,
         origin: { y: 0.7 },
         colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
