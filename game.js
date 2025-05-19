@@ -116,12 +116,12 @@ function setupPusher() {
 // Effet de confetti avec personnalisation
 function launchConfetti() {
     confetti({
-        particleCount: 150,
+        particleCount: 300,
         spread: 70,
         angle: 90,
         origin: { y: 0.7 },
         colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
-        shapes: ['circle', 'square', 'star'],
+        shapes: ['circle', 'square', 'circle'],
         scalar: 1.2,
         ticks: 200,
         gravity: 0.6,
