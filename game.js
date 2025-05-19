@@ -96,8 +96,12 @@ function setupPusher() {
         setTimeout(() => emojiElement.classList.remove('bounce'), 500);
 
         // Effet de confetti si le score est supérieur à 500
-            if (score >= 500) {
+            if (score >= 750) {
                 launchConfetti();
+            }
+
+            if (score >= 500) {
+                launchConfetti2();
             }
     });
 
@@ -117,6 +121,21 @@ function setupPusher() {
 function launchConfetti() {
     confetti({
         particleCount: 1000,
+        spread: 150,
+        angle: 90,
+        origin: { y: 0.9 },
+        colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
+        shapes: ['circle', 'square', 'circle'],
+        scalar: 1.2,
+        ticks: 200,
+        gravity: 0.6,
+        drift: 0.05,
+    });
+}
+
+function launchConfetti2() {
+    confetti({
+        particleCount: 500,
         spread: 150,
         angle: 90,
         origin: { y: 0.9 },
