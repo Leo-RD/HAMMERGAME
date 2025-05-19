@@ -119,7 +119,7 @@ function launchConfetti() {
         particleCount: 1000,
         spread: 150,
         angle: 90,
-        origin: { y: 1.0 },
+        origin: { y: 0.9 },
         colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
         shapes: ['circle', 'square', 'circle'],
         scalar: 1.2,
