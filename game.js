@@ -97,7 +97,7 @@ function setupPusher() {
 
         // Effet de confetti si le score est supérieur à 500
             if (score >= 500) {
-                confetti();
+                launchConfetti();
             }
     });
 
@@ -111,3 +111,20 @@ function setupPusher() {
     // Configurer MQTT pour le score en temps réel
     setupPusher();
 });
+
+
+// Effet de confetti avec personnalisation
+function launchConfetti() {
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        angle: 90,
+        origin: { y: 0.7 },
+        colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
+        shapes: ['circle', 'square', 'star'],
+        scalar: 1.2,
+        ticks: 200,
+        gravity: 0.6,
+        drift: 0.05,
+    });
+}
