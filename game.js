@@ -17,6 +17,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Ajouter un effet de clignotement doux
     title.classList.add('neon-effect');
+
+    // Effet d'étincelles
+    function createSparkle() {
+        const sparkle = document.createElement('span');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        document.body.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 1000);
+    }
+
+    // Créer des étincelles à intervalle régulier
+    setInterval(createSparkle, 500);
     // Bouton retour
     const backButton = document.getElementById('back-button');
     backButton.addEventListener('click', function() {
