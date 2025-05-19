@@ -79,17 +79,24 @@ function setupPusher() {
         console.log("📩 Nouveau score reçu :", score);
         document.getElementById("current-score").textContent = score;
         
-        // Gestion des emojis selon le score
+        // Gestion des emojis et du texte selon le score
         const emojiElement = document.getElementById('emoji');
+        let emoji = '';
+        let message = '';
         if (score < 250) {
-            emojiElement.textContent = '😢';
+            emoji = '😢';
+            message = 'Dommage !';
         } else if (score < 500) {
-            emojiElement.textContent = '😐';
+            emoji = '😐';
+            message = 'Peut mieux faire !';
         } else if (score < 750) {
-            emojiElement.textContent = '😊';
+            emoji = '😊';
+            message = 'Bravo !';
         } else {
-            emojiElement.textContent = '😁';
+            emoji = '😁';
+            message = 'Excellent !';
         }
+        emojiElement.textContent = `${emoji} ${message}`;
 
         // Animation de rebond
         emojiElement.classList.add('bounce');
