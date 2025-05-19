@@ -2,12 +2,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Récupérer le nom du joueur depuis sessionStorage
     const playerName = sessionStorage.getItem('playerName') || 'JOUEUR';
     
-    // Animation du titre
+    // Animation du titre néon/guirlande
     const title = document.querySelector('.title');
-    setInterval(() => {
-        title.style.textShadow = `0 0 ${Math.random() * 15 + 5}px rgba(255, 0, 0, 0.7)`;
-    }, 500);
+    let colors = ['#FF006E', '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B'];
+    let colorIndex = 0;
     
+    function animateNeon() {
+        // Alterner les couleurs
+        colorIndex = (colorIndex + 1) % colors.length;
+        title.style.color = colors[colorIndex];
+        title.style.textShadow = `0 0 15px ${colors[colorIndex]}, 0 0 30px ${colors[colorIndex]}`;
+    }
+    setInterval(animateNeon, 300);
+
+    // Ajouter un effet de clignotement doux
+    title.classList.add('neon-effect');
     // Bouton retour
     const backButton = document.getElementById('back-button');
     backButton.addEventListener('click', function() {
