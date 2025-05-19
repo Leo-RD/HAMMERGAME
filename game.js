@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Animation du titre néon/guirlande
     const title = document.querySelector('.title');
-    let colors = ['#FF006E', '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B'];
+    let colors = ['#D00000', '#FFBA08', '#3F88C5', '#032B43', '#136F63'];
     let colorIndex = 0;
     
     function animateNeon() {
