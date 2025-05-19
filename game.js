@@ -143,7 +143,7 @@ function launchConfetti2() {
         shapes: ['circle', 'square', 'circle'],
         scalar: 1.2,
         ticks: 200,
-        gravity: 0.6,
+        gravity: 0,
         drift: 0.05,
     });
 }
