@@ -88,7 +88,7 @@ function setupPusher() {
             message = 'Dommage !';
         } else if (score < 500) {
             emoji = '😐';
-            message = 'Peut mieux faire !';
+            message = 'Tu peux mieux faire !';
         } else if (score < 750) {
             emoji = '😊';
             message = 'Bravo !';
