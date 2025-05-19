@@ -135,8 +135,8 @@ function launchConfetti() {
 
 function launchConfetti2() {
     confetti({
-        particleCount: 500,
-        spread: 150,
+        particleCount: 250,
+        spread: 100,
         angle: 90,
         origin: { y: 0.9 },
         colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
