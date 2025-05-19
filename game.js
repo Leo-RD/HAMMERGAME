@@ -94,6 +94,11 @@ function setupPusher() {
         // Animation de rebond
         emojiElement.classList.add('bounce');
         setTimeout(() => emojiElement.classList.remove('bounce'), 500);
+
+        // Effet de confetti si le score est supérieur à 500
+            if (score >= 500) {
+                confetti();
+            }
     });
 
     console.log("✅ Connecté à Pusher");
