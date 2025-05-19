@@ -85,7 +85,7 @@ function setupPusher() {
         let message = '';
         if (score === 999) {
             emoji = '🤯';
-            message = 'tout simplement inoui';
+            message = 'Tout simplement inoui !';
         } else if (score < 250) {
             emoji = '😢';
             message = 'Dommage !';
