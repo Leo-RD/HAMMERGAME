@@ -83,7 +83,10 @@ function setupPusher() {
         const emojiElement = document.getElementById('emoji');
         let emoji = '';
         let message = '';
-        if (score < 250) {
+        if (score === 999) {
+            emoji = '🤯';
+            message = 'tout simplement inoui';
+        } else if (score < 250) {
             emoji = '😢';
             message = 'Dommage !';
         } else if (score < 500) {
