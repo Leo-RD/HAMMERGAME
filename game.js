@@ -125,7 +125,7 @@ function launchConfetti() {
         angle: 90,
         origin: { y: 0.9 },
         colors: ['#D00000', '#FFBA08', '#3F88C5', '#032B43', '#136F63'],
-        shapes: ['circle', 'square', 'circle'],
+        shapes: ['circle', 'square', 'star'],
         scalar: 1.2,
         ticks: 200,
         gravity: 0.6,
