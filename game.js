@@ -139,7 +139,7 @@ function launchConfetti2() {
         spread: 100,
         angle: 90,
         origin: { y: 0.9 },
-        colors: ['#FF4081', '#448AFF', '#FFEB3B', '#4CAF50', '#FF5722'],
+        colors: ['#D00000', '#FFBA08', '#3F88C5', '#032B43', '#136F63'],
         shapes: ['circle', 'square', 'circle'],
         scalar: 1.2,
         ticks: 200,
