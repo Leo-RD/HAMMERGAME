@@ -116,7 +116,7 @@ function setupPusher() {
 // Effet de confetti avec personnalisation
 function launchConfetti() {
     confetti({
-        particleCount: 300,
+        particleCount: 500,
         spread: 70,
         angle: 90,
         origin: { y: 0.7 },
