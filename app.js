@@ -4,6 +4,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingElement = document.getElementById('loading');
     const errorMessageElement = document.getElementById('error-message');
 
+    if (!playerIdGlobal) {
+    getOrCreatePlayer(playerName).then(id => {
+        playerIdGlobal = id;
+        console.log('🧠 ID joueur stocké :', id);
+        sessionStorage.setItem('playerId', id);
+    });
+} else {
+    console.log('🧠 ID joueur récupéré depuis sessionStorage :', playerIdGlobal);
+}
+
+
     const API_URL = 'https://tom74.alwaysdata.net/hammerapi'; // à adapter selon ton hébergement
 
     // Animation du titre
