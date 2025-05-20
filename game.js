@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const playerName = sessionStorage.getItem('playerName') || 'JOUEUR';
-    createPlayer(playerName); // Enregistre le joueur à l’arrivée
+
+    let playerIdGlobal = null;
+
+    // Récupère ou crée le joueur au chargement
+    getOrCreatePlayer(playerName).then(id => {
+        playerIdGlobal = id;
+    });
 
     // Animation du titre
     const title = document.querySelector('.title');
@@ -34,35 +40,47 @@ document.addEventListener('DOMContentLoaded', function () {
     loadTopScores();
 
     document.getElementById('refresh-button').addEventListener('click', function () {
-    loadTopScores();
-});
+        loadTopScores();
+    });
 
     // Connexion Pusher
     setupPusher();
 });
 
-// 🧠 Crée un joueur
-async function createPlayer(name) {
+// 🔄 Crée ou récupère un joueur existant
+async function getOrCreatePlayer(name) {
     try {
+        // Vérifie s’il existe déjà
+        const checkResponse = await fetch(`https://tom74.alwaysdata.net/hammerapi/players?name=${encodeURIComponent(name)}`);
+        if (checkResponse.ok) {
+            const existingPlayer = await checkResponse.json();
+            if (existingPlayer && existingPlayer.id) {
+                console.log("👤 Joueur existant trouvé:", existingPlayer);
+                return existingPlayer.id;
+            }
+        }
+
+        // Sinon le crée
         const response = await fetch('https://tom74.alwaysdata.net/hammerapi/players', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: name, age: 0 })
         });
-        if (!response.ok) {
-            console.warn("❗ Impossible de créer le joueur (peut-être déjà existant)");
-        } else {
-            console.log('✅ Joueur créé');
-        }
+
+        if (!response.ok) throw new Error("Erreur création joueur");
+
+        const newPlayer = await response.json();
+        console.log('✅ Joueur créé :', newPlayer);
+        return newPlayer.id;
     } catch (error) {
-        console.error('Erreur création joueur :', error);
+        console.error('Erreur lors de getOrCreatePlayer:', error);
+        return null;
     }
 }
 
-// 🧠 Envoie le score à l'API
+// 📤 Envoie le score à l'API
 async function sendScoreToAPI(playerId, score, hitStrength) {
     try {
-        // 🐛 Log des données envoyées à l'API pour debug
         console.log("Données envoyées à l'API :", {
             player_id: playerId,
             score: score,
@@ -71,9 +89,7 @@ async function sendScoreToAPI(playerId, score, hitStrength) {
 
         const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 player_id: playerId,
                 score: score,
@@ -93,15 +109,14 @@ async function sendScoreToAPI(playerId, score, hitStrength) {
     }
 }
 
-
-// 🧠 Affiche les meilleurs scores
+// 🧾 Affiche les meilleurs scores
 async function loadTopScores() {
     try {
         const response = await fetch(`https://tom74.alwaysdata.net/hammerapi/scores?ts=${Date.now()}`);
         if (!response.ok) throw new Error('Erreur chargement scores');
         const data = await response.json();
 
-        console.log("📊 Scores reçus de l'API :", data); // ← Debug ici
+        console.log("📊 Scores reçus de l'API :", data);
 
         if (data.length > 0) {
             document.getElementById('best-player').textContent = data[0].name || 'PSEUDO';
@@ -125,46 +140,49 @@ async function loadTopScores() {
     }
 }
 
-
 function getOrdinalSuffix(num) {
     if (num === 2) return 'nd';
     if (num === 3) return 'rd';
     return 'th';
 }
 
-// 📡 Pusher : écoute des scores en temps réel
+// 📡 Pusher : écoute les scores en temps réel
 function setupPusher() {
     const pusher = new Pusher("95eb32a3909b0ed379b1", {
         cluster: "eu",
     });
 
     const channel = pusher.subscribe("hammergame");
-    channel.bind("score-update", function (data) {
+    channel.bind("score-update", async function (data) {
         const score = parseInt(data.score, 10);
         const playerName = sessionStorage.getItem('playerName') || 'JOUEUR';
 
         console.log("📩 Nouveau score reçu :", score);
         document.getElementById("current-score").textContent = score;
-        sendScoreToAPI(playerName, score, data.hit_strength || 0);
 
+        // 🔄 Récupère l'ID du joueur
+        const playerId = await getOrCreatePlayer(playerName);
+
+        if (playerId) {
+            await sendScoreToAPI(playerId, score, data.hit_strength || 0);
+        } else {
+            console.warn("❌ Impossible d’envoyer le score : ID joueur introuvable");
+        }
+
+        // Emoji & animation
         const emojiElement = document.getElementById('emoji');
         let emoji = '';
         let message = '';
         if (score === 999) {
-            emoji = '🤯';
-            message = 'Tout simplement inoui !';
+            emoji = '🤯'; message = 'Tout simplement inoui !';
         } else if (score < 250) {
-            emoji = '😢';
-            message = 'Dommage !';
+            emoji = '😢'; message = 'Dommage !';
         } else if (score < 500) {
-            emoji = '😐';
-            message = 'Tu peux mieux faire !';
+            emoji = '😐'; message = 'Tu peux mieux faire !';
         } else if (score < 750) {
-            emoji = '😊';
-            message = 'Bravo !';
+            emoji = '😊'; message = 'Bravo !';
         } else {
-            emoji = '😁';
-            message = 'Excellent !';
+            emoji = '😁'; message = 'Excellent !';
         }
 
         emojiElement.textContent = `${emoji} ${message}`;
@@ -211,4 +229,3 @@ function launchConfetti2() {
         drift: 0.05,
     });
 }
-// 🎉 Confettis
