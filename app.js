@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const playButton = document.getElementById('play-button');
     const playerNameInput = document.getElementById('player-name');
     const loadingElement = document.getElementById('loading');
@@ -29,6 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     setInterval(createSparkle, 500);
 
+    const backButton = document.getElementById('back-button');
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    }
+
     // ▶️ Clique sur "Jouer"
     playButton.addEventListener('click', async function () {
         const playerName = playerNameInput.value.trim();
@@ -44,45 +51,30 @@ document.addEventListener('DOMContentLoaded', function () {
         errorMessageElement.classList.add('hidden');
 
         try {
-            // 1. Vérifier si le joueur existe déjà
-            const getRes = await fetch(`${API_URL}/players?name=${encodeURIComponent(playerName)}`);
-            let playerData = await getRes.json();
+            // 1. Création du joueur via l'API
+            const createRes = await fetch(`${API_URL}/players`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: playerName, age: 0 }) // age requis par l'API
+            });
 
-            let playerId = null;
+            if (!createRes.ok) throw new Error('Échec de la création du joueur');
 
-            if (Array.isArray(playerData) && playerData.length > 0) {
-                // Joueur trouvé
-                playerId = playerData[0].id;
-                console.log('👤 Joueur existant trouvé, ID :', playerId);
-            } else {
-                // Joueur non trouvé, on le crée
-                console.log('➕ Joueur non trouvé, création...');
-                const createRes = await fetch(`${API_URL}/players`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: playerName, age: 0 }) // age requis par l'API
-                });
+            // 2. Récupération de tous les joueurs pour retrouver son ID
+            const playersRes = await fetch(`${API_URL}/players`);
+            const players = await playersRes.json();
+            const newPlayer = players.find(p => p.name === playerName);
+            if (!newPlayer) throw new Error('Joueur introuvable après création');
 
-                if (!createRes.ok) throw new Error('Erreur lors de la création du joueur');
+            // 3. Stocker dans sessionStorage ou localStorage
+            sessionStorage.setItem('playerId', newPlayer.id);
+            sessionStorage.setItem('playerName', newPlayer.name);
 
-                const allPlayersRes = await fetch(`${API_URL}/players`);
-                const allPlayers = await allPlayersRes.json();
-                const newPlayer = allPlayers.find(p => p.name === playerName);
-                if (!newPlayer) throw new Error('Impossible de retrouver le joueur après création');
-
-                playerId = newPlayer.id;
-                console.log('✅ Joueur créé, ID :', playerId);
-            }
-
-            // 2. Stocker dans sessionStorage
-            sessionStorage.setItem('playerId', playerId);
-            sessionStorage.setItem('playerName', playerName);
-
-            // 3. Rediriger vers le jeu
+            // 4. Rediriger vers le jeu
             window.location.href = 'game.html';
 
         } catch (error) {
-            console.error('❌ Erreur dans app.js :', error);
+            console.error('Erreur:', error);
             errorMessageElement.classList.remove('hidden');
             playButton.classList.remove('hidden');
             loadingElement.classList.add('hidden');
