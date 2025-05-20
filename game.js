@@ -62,6 +62,13 @@ async function createPlayer(name) {
 // 🧠 Envoie le score à l'API
 async function sendScoreToAPI(playerId, score, hitStrength) {
     try {
+        // 🐛 Log des données envoyées à l'API pour debug
+        console.log("Données envoyées à l'API :", {
+            player_id: playerId,
+            score: score,
+            hit_strength: hitStrength
+        });
+
         const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores', {
             method: 'POST',
             headers: {
@@ -80,11 +87,12 @@ async function sendScoreToAPI(playerId, score, hitStrength) {
             throw new Error(result.error || 'Erreur lors de l\'envoi du score');
         }
 
-        console.log("Score envoyé avec succès:", result.message);
+        console.log("✅ Score envoyé avec succès:", result.message);
     } catch (error) {
         console.error("❌ Erreur envoi score:", error);
     }
 }
+
 
 // 🧠 Affiche les meilleurs scores
 async function loadTopScores() {
