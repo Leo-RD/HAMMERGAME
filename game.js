@@ -1,108 +1,138 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Récupérer le nom du joueur depuis sessionStorage
+document.addEventListener('DOMContentLoaded', function () {
     const playerName = sessionStorage.getItem('playerName') || 'JOUEUR';
-    
-    // Animation du titre néon/guirlande
+    createPlayer(playerName); // Enregistre le joueur à l’arrivée
+
+    // Animation du titre
     const title = document.querySelector('.title');
     let colors = ['#D00000', '#FFBA08', '#3F88C5', '#FFFFFF', '#32CD32'];
     let colorIndex = 0;
-    
-    function animateNeon() {
-        // Alterner les couleurs
+    setInterval(() => {
         colorIndex = (colorIndex + 1) % colors.length;
         title.style.color = colors[colorIndex];
         title.style.textShadow = `0 0 15px ${colors[colorIndex]}, 0 0 30px ${colors[colorIndex]}`;
-    }
-    setInterval(animateNeon, 300);
-
-    // Ajouter un effet de clignotement doux
+    }, 300);
     title.classList.add('neon-effect');
 
-    // Effet d'étincelles
+    // Étincelles
     function createSparkle() {
         const sparkle = document.createElement('span');
         sparkle.className = 'sparkle';
         sparkle.style.left = Math.random() * 100 + '%';
         sparkle.style.top = Math.random() * 100 + '%';
         document.body.appendChild(sparkle);
-
         setTimeout(() => sparkle.remove(), 1000);
     }
-
-    // Créer des étincelles à intervalle régulier
     setInterval(createSparkle, 500);
+
     // Bouton retour
     const backButton = document.getElementById('back-button');
-    backButton.addEventListener('click', function() {
+    backButton.addEventListener('click', () => {
         window.location.href = 'index.html';
     });
-    
-    // Fonction pour charger les meilleurs scores
-    async function loadTopScores() {
-        try {
-            const response = await fetch('api/top_score.php');
-            
-            if (!response.ok) {
-                throw new Error('Erreur lors du chargement des scores');
-            }
-            
-            const data = await response.json();
-            
-            // Mettre à jour le meilleur joueur et score
-            if (data.length > 0) {
-                document.getElementById('best-player').textContent = data[0].name || 'PSEUDO';
-                document.getElementById('best-score').textContent = data[0].score || '999';
-                
-                // Mettre à jour le classement
-                const standingsList = document.getElementById('standings-list');
-                standingsList.innerHTML = ''; // Effacer la liste existante
-                
-                // Afficher les positions 2 à 10 (ou moins si moins de données)
-                for (let i = 1; i < Math.min(data.length, 10); i++) {
-                    const li = document.createElement('li');
-                    li.textContent = `${i + 1}${getOrdinalSuffix(i + 1)} - ${data[i].name} : ${data[i].score}`;
-                    standingsList.appendChild(li);
-                }
-                
-                // Compléter avec des entrées vides si nécessaire
-                for (let i = data.length; i < 10; i++) {
-                    const li = document.createElement('li');
-                    li.textContent = `${i + 1}${getOrdinalSuffix(i + 1)} -`;
-                    standingsList.appendChild(li);
-                }
-            }
-            
-        } catch (error) {
-            console.error('Erreur:', error);
+
+    // Chargement des scores initiaux
+    loadTopScores();
+
+    // Connexion Pusher
+    setupPusher();
+});
+
+// 🧠 Crée un joueur
+async function createPlayer(name) {
+    try {
+        const response = await fetch('https://tom74.alwaysdata.net/hammerapi/players', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: name, age: 0 })
+        });
+        if (!response.ok) {
+            console.warn("❗ Impossible de créer le joueur (peut-être déjà existant)");
+        } else {
+            console.log('✅ Joueur créé');
         }
+    } catch (error) {
+        console.error('Erreur création joueur :', error);
     }
-    
-    // Fonction pour obtenir le suffixe ordinal (st, nd, rd, th)
-    function getOrdinalSuffix(num) {
-        if (num === 2) return 'nd';
-        if (num === 3) return 'rd';
-        return 'th';
+}
+
+// 🧠 Envoie le score à l'API
+async function sendScoreToAPI(playerName, score, hit_strength = 0) {
+    try {
+        const playersResponse = await fetch('https://tom74.alwaysdata.net/hammerapi/players');
+        const players = await playersResponse.json();
+        const player = players.find(p => p.name === playerName);
+        if (!player) throw new Error('Joueur introuvable');
+
+        const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                player_id: player.id,
+                score: score,
+                hit_strength: hit_strength
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de l\'envoi du score');
+        }
+
+        console.log('✅ Score envoyé à l’API');
+    } catch (error) {
+        console.error('Erreur envoi score :', error);
     }
-    
-    // Fonction pour configurer MQTT pour les scores en temps réel
-    // Fonction pour configurer Pusher pour les scores en temps réel
-// Fonction pour configurer Pusher pour les scores en temps réel
+}
+
+// 🧠 Affiche les meilleurs scores
+async function loadTopScores() {
+    try {
+        const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores');
+        if (!response.ok) throw new Error('Erreur chargement scores');
+        const data = await response.json();
+
+        if (data.length > 0) {
+            document.getElementById('best-player').textContent = data[0].name || 'PSEUDO';
+            document.getElementById('best-score').textContent = data[0].score || '999';
+
+            const standingsList = document.getElementById('standings-list');
+            standingsList.innerHTML = '';
+            for (let i = 1; i < Math.min(data.length, 10); i++) {
+                const li = document.createElement('li');
+                li.textContent = `${i + 1}${getOrdinalSuffix(i + 1)} - ${data[i].name} : ${data[i].score}`;
+                standingsList.appendChild(li);
+            }
+            for (let i = data.length; i < 10; i++) {
+                const li = document.createElement('li');
+                li.textContent = `${i + 1}${getOrdinalSuffix(i + 1)} -`;
+                standingsList.appendChild(li);
+            }
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
+function getOrdinalSuffix(num) {
+    if (num === 2) return 'nd';
+    if (num === 3) return 'rd';
+    return 'th';
+}
+
+// 📡 Pusher : écoute des scores en temps réel
 function setupPusher() {
-    // Initialiser Pusher
     const pusher = new Pusher("95eb32a3909b0ed379b1", {
         cluster: "eu",
     });
 
-    // S'abonner au canal "hammergame"
     const channel = pusher.subscribe("hammergame");
-    
-    // Écouter les mises à jour des scores
-    channel.bind("score-update", function(data) {
-        const score = parseInt(data.score, 10); // Extraction du score
+    channel.bind("score-update", function (data) {
+        const score = parseInt(data.score, 10);
+        const playerName = sessionStorage.getItem('playerName') || 'JOUEUR';
+
         console.log("📩 Nouveau score reçu :", score);
         document.getElementById("current-score").textContent = score;
-        
-        // Gestion des emojis et du texte selon le score
+        sendScoreToAPI(playerName, score, data.hit_strength || 0);
+
         const emojiElement = document.getElementById('emoji');
         let emoji = '';
         let message = '';
@@ -122,35 +152,22 @@ function setupPusher() {
             emoji = '😁';
             message = 'Excellent !';
         }
-        emojiElement.textContent = `${emoji} ${message}`;
 
-        // Animation de rebond
+        emojiElement.textContent = `${emoji} ${message}`;
         emojiElement.classList.add('bounce');
         setTimeout(() => emojiElement.classList.remove('bounce'), 500);
 
-        // Effet de confetti si le score est supérieur à 500
-            if (score >= 750) {
-                launchConfetti();
-            }
-
-            if (score >= 500) {
-                launchConfetti2();
-            }
+        if (score >= 750) {
+            launchConfetti();
+        } else if (score >= 500) {
+            launchConfetti2();
+        }
     });
 
     console.log("✅ Connecté à Pusher");
 }
 
-
-    // Charger les meilleurs scores au démarrage
-    loadTopScores();
-    
-    // Configurer MQTT pour le score en temps réel
-    setupPusher();
-});
-
-
-// Effet de confetti avec personnalisation
+// 🎉 Confettis
 function launchConfetti() {
     confetti({
         particleCount: 1000,
@@ -173,10 +190,11 @@ function launchConfetti2() {
         angle: 90,
         origin: { y: 0.9 },
         colors: ['#D00000', '#FFBA08', '#3F88C5', '#032B43', '#136F63'],
-        shapes: ['circle', 'square', 'circle'],
+        shapes: ['circle', 'square'],
         scalar: 1.2,
         ticks: 200,
         gravity: 0.6,
         drift: 0.05,
     });
 }
+// 🎉 Confettis
