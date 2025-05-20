@@ -303,6 +303,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: michroma, sans-serif;
 }
 .refresh-button:hover {
     background-color: #2C6AA8;
