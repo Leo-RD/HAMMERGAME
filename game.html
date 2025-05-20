@@ -12,7 +12,7 @@
 <body>
     <div class="game-container">
         <h1 class="title">JEU DE LA MAILLOCHE</h1>
-        
+        <button id="refresh-button" class="refresh-button">🔄 Rafraîchir les scores</button>
         <div class="score-container">
             <div class="score">SCORE : <span id="current-score">0</span></div>
         </div>
@@ -31,7 +31,7 @@
             </div>
             
             <div class="panel">
-                <button id="refresh-button" class="refresh-button">🔄 Rafraîchir les scores</button>
+                <button id="back-button" class="back-button">RETOUR</button>
                 <h2 class="panel-title">MEILLEUR SCORE</h2>
                 <div class="best-score">
                     <div>1st - <span id="best-player">PSEUDO</span> :</div>
@@ -43,7 +43,7 @@
         <!-- Conteneur pour les emojis -->
         <div id="emoji">🙂</div>
 
-        <button id="back-button" class="back-button">RETOUR</button>
+        
     </div>
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script src="game.js"></script>
