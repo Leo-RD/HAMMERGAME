@@ -60,30 +60,29 @@ async function createPlayer(name) {
 }
 
 // 🧠 Envoie le score à l'API
-async function sendScoreToAPI(playerName, score, hit_strength = 0) {
+async function sendScoreToAPI(playerId, score, hitStrength) {
     try {
-        const playersResponse = await fetch('https://tom74.alwaysdata.net/hammerapi/players');
-        const players = await playersResponse.json();
-        const player = players.find(p => p.name === playerName);
-        if (!player) throw new Error('Joueur introuvable');
-
         const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
-                player_id: player.id,
+                player_id: playerId,
                 score: score,
-                hit_strength: hit_strength
+                hit_strength: hitStrength
             })
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-            throw new Error('Erreur lors de l\'envoi du score');
+            throw new Error(result.error || 'Erreur lors de l\'envoi du score');
         }
 
-        console.log('✅ Score envoyé à l’API');
+        console.log("Score envoyé avec succès:", result.message);
     } catch (error) {
-        console.error('Erreur envoi score :', error);
+        console.error("❌ Erreur envoi score:", error);
     }
 }
 
