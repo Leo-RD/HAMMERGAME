@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', function () {
         loadTopScores();
     });
 
+    // Rafraîchissement automatique toutes les 4 secondes (4000 ms)
+    setInterval(() => {
+        loadTopScores();
+    }, 10000);
+
     // Connexion Pusher
     setupPusher();
 });
