@@ -132,7 +132,7 @@ async function loadTopScores() {
 
             const standingsList = document.getElementById('standings-list');
             standingsList.innerHTML = '';
-            for (let i = 1; i < Math.min(data.length, 10); i++) {
+            for (let i = 1; i < Math.min(data.length, 7); i++) {
                 const li = document.createElement('li');
                 li.textContent = `${i + 1}${getOrdinalSuffix(i + 1)} - ${data[i].name} : ${data[i].score}`;
                 standingsList.appendChild(li);
