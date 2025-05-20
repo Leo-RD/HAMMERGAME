@@ -97,9 +97,11 @@ async function sendScoreToAPI(playerId, score, hitStrength) {
 // 🧠 Affiche les meilleurs scores
 async function loadTopScores() {
     try {
-        const response = await fetch('https://tom74.alwaysdata.net/hammerapi/scores');
+        const response = await fetch(`https://tom74.alwaysdata.net/hammerapi/scores?ts=${Date.now()}`);
         if (!response.ok) throw new Error('Erreur chargement scores');
         const data = await response.json();
+
+        console.log("📊 Scores reçus de l'API :", data); // ← Debug ici
 
         if (data.length > 0) {
             document.getElementById('best-player').textContent = data[0].name || 'PSEUDO';
@@ -122,6 +124,7 @@ async function loadTopScores() {
         console.error('Erreur:', error);
     }
 }
+
 
 function getOrdinalSuffix(num) {
     if (num === 2) return 'nd';
