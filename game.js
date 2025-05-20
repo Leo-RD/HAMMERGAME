@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Chargement des scores initiaux
     loadTopScores();
 
+    document.getElementById('refresh-button').addEventListener('click', function () {
+    loadTopScores();
+});
+
     // Connexion Pusher
     setupPusher();
 });

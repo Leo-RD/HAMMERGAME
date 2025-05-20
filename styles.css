@@ -291,3 +291,19 @@ body {
         gap: 30px;
     }
 }
+
+
+.refresh-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #3F88C5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.refresh-button:hover {
+    background-color: #2C6AA8;
+}
