@@ -50,12 +50,17 @@ document.addEventListener('DOMContentLoaded', function () {
 // 🔄 Crée ou récupère un joueur existant
 async function getOrCreatePlayer(name) {
     try {
-        // Vérifie s’il existe déjà
         const checkResponse = await fetch(`https://tom74.alwaysdata.net/hammerapi/players?name=${encodeURIComponent(name)}`);
         if (checkResponse.ok) {
             const existingPlayer = await checkResponse.json();
-            if (existingPlayer && existingPlayer.id) {
-                console.log("👤 Joueur existant trouvé:", existingPlayer);
+
+            // Vérifie si c’est un tableau avec au moins un joueur
+            if (Array.isArray(existingPlayer) && existingPlayer.length > 0 && existingPlayer[0].id) {
+                console.log("👤 Joueur existant trouvé:", existingPlayer[0]);
+                return existingPlayer[0].id;
+            } else if (existingPlayer.id) {
+                // Cas unique d’un objet
+                console.log("👤 Joueur existant trouvé (objet):", existingPlayer);
                 return existingPlayer.id;
             }
         }
@@ -67,7 +72,10 @@ async function getOrCreatePlayer(name) {
             body: JSON.stringify({ name: name, age: 0 })
         });
 
-        if (!response.ok) throw new Error("Erreur création joueur");
+        if (!response.ok) {
+            const err = await response.text();
+            throw new Error("Erreur création joueur: " + err);
+        }
 
         const newPlayer = await response.json();
         console.log('✅ Joueur créé :', newPlayer);
