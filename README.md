@@ -28,7 +28,7 @@
    A Python script running on the Raspberry Pi reads the sensor data and calculates a score based on impact strength.
 
 3. **API Communication**
-   The Raspberry Pi hosts an API (FastAPI or Flask) to send scores to a web client.
+   alwaysdata hosts an API to send scores to a web client.
 
 4. **Web Display**
    The client displays the current score and updates a real-time leaderboard showing all-time best scores.
@@ -38,7 +38,7 @@
 ## 🧩 System Architecture
 
 ```plaintext
-[Hammer Hit] --> [Pressure Sensor] --> [Raspberry Pi + Python] --> [API (Flask/FastAPI)] --> [Webpage]
+[Hammer Hit] --> [Pressure Sensor] --> [Raspberry Pi + Python] --> [API] --> [Webpage]
                                                                   \
                                                                    --> [Database for scores]
 ```
@@ -87,15 +87,7 @@ pip install -r requirements.txt
 python sensor_reader.py
 ```
 
-### 4. Start the API Server
-
-```bash
-uvicorn api:app --reload
-# or if using Flask:
-# python app.py
-```
-
-### 5. Launch the Webpage
+### 4. Launch the Webpage
 
 Open `index.html` in your browser or serve it via a web server for a cleaner setup.
 
