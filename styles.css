@@ -148,7 +148,7 @@ body {
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
 }
 
-.play-button:active, .back-button:active {
+.play-button:active, .back-button:active, .refresh-button:active {
     transform: scale(0.98);
 }
 
@@ -295,15 +295,16 @@ body {
 
 .refresh-button {
     margin-top: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 15px 40px;
     background-color: #3F88C5;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
     font-family: michroma, sans-serif;
+    font-size: 1.5rem;
 }
 .refresh-button:hover {
     background-color: #2C6AA8;
