@@ -11,13 +11,10 @@
 </head>
 <body>
     <div class="game-container">
-        <h1 class="title">JEU DU MARTEAU</h1>
-        <button id="refresh-button" class="refresh-button">🔄</button>
-        <button id="back-button" class="back-button">RETOUR</button>
+        <h1 class="title">🔨JEU DU MARTEAU🎯</h1>
         <div class="score-container">
             <div class="score">SCORE : <span id="current-score">0</span></div>
-        </div>
-        
+        </div>       
         <div class="panels-container">
             <div class="panel">
                 <h2 class="panel-title">CLASSEMENT</h2>
@@ -29,8 +26,7 @@
                     <li>6th -</li>
                     <li>7th -</li>
                 </ul>
-            </div>
-            
+            </div> 
             <div class="panel">
                 
                 <h2 class="panel-title">MEILLEUR SCORE</h2>
@@ -40,11 +36,16 @@
                 </div>
             </div>
         </div>
-
         <!-- Conteneur pour les emojis -->
-        <div id="emoji">🙂</div>
+        <div id="emoji">🙂</div>    
+    </div>
 
-        
+    <div class="refresh-container">
+        <button id="refresh-button" class="refresh-button">🔄 ACTUALISER</button>
+    </div>
+
+    <div class="back-container">
+        <button id="back-button" class="back-button">🔙RETOUR</button>
     </div>
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script src="game.js"></script>

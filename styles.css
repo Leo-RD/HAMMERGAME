@@ -142,10 +142,17 @@ body {
     font-size: 2rem;
 }
 
-.play-button:hover, .back-button:hover, .refresh-button:hover {
+.play-button:hover, .back-button:hover {
     background-color: rgba(255, 0, 0, 0.9);
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+}
+
+.refresh-button:hover {
+    
+    background-color: #1ebd20;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #1ebd20;
 }
 
 .play-button:active, .back-button:active, .refresh-button:active {
@@ -294,9 +301,9 @@ body {
 
 
 .refresh-button {
+    background-color: rgba(33, 124, 39, 0.9);
     margin-top: 1rem;
     padding: 15px 40px;
-    background-color: #1ebd20;
     color: white;
     border: none;
     border-radius: 10px;
@@ -304,8 +311,30 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
     font-family: michroma, sans-serif;
-    font-size: 2rem; /* Augmentation de la taille du texte */
+    font-size: 1.5rem; /* Augmentation de la taille du texte */
 }
-.refresh-button:hover {
-    background-color: #2C6AA8;
+
+
+
+.refresh-container {
+    position: fixed;
+    top: 60px;   /* espace depuis le haut */
+    left: 60px;  /* espace depuis la gauche */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+
+.back-container {
+    position: fixed;
+    top: 60px;   /* espace depuis le haut */
+    right: 60px;  /* espace depuis la gauche */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
