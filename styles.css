@@ -142,7 +142,7 @@ body {
     font-size: 2rem;
 }
 
-.play-button:hover, .back-button:hover {
+.play-button:hover, .back-button:hover, .refresh-button:hover {
     background-color: rgba(255, 0, 0, 0.9);
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
@@ -296,7 +296,7 @@ body {
 .refresh-button {
     margin-top: 1rem;
     padding: 15px 40px;
-    background-color: #3F88C5;
+    background-color: #1ebd20;
     color: white;
     border: none;
     border-radius: 10px;
@@ -304,7 +304,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
     font-family: michroma, sans-serif;
-    font-size: 1.5rem;
+    font-size: 2rem; /* Augmentation de la taille du texte */
 }
 .refresh-button:hover {
     background-color: #2C6AA8;
